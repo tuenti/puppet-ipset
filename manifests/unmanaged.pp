@@ -1,7 +1,13 @@
-# Wrapper for sets, whose contents is not managed by puppet
+# Declare an IP set, without managing its content.
 #
-# Warning: when chaning set attributes (type, options)
+# Warning: when changing IP set attributes (type, options)
 #          contents won't be kept, set will be recreated as empty
+#
+# @param ensure Should the IP set be created or removed ?
+# @param type Type of IP set.
+# @param options IP set options.
+# @param keep_in_sync If ``true``, Puppet will update the IP set in the kernel
+#   memory. If ``false``, it will only update the IP sets on the filesystem.
 define ipset::unmanaged(
   Enum['present', 'absent'] $ensure = 'present',
   IPSet::Type $type = 'hash:ip',
