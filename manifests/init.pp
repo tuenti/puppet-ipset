@@ -1,12 +1,12 @@
 define ipset (
-  $set,
-  $ensure       = 'present',
-  $type         = 'hash:ip',
-  $options      = {},
+  IPSet::Set $set,
+  Enum['present', 'absent'] $ensure = 'present',
+  IPSet::Type $type = 'hash:ip',
+  IPSet::Options $options = {},
   # do not touch what is inside the set, just its header (properties)
-  $ignore_contents = false,
+  Boolean $ignore_contents = false,
   # keep definition file and in-kernel runtime state in sync
-  $keep_in_sync = true,
+  Boolean $keep_in_sync = true,
 ) {
   include ipset::params
 
@@ -33,29 +33,37 @@ define ipset (
     }
 
     # content
-    if is_array($set) {
-      # create file with ipset, one record per line
-      file { "${::ipset::params::config_path}/${title}.set":
-        ensure  => file,
-        content => inline_template('<%= (@set.map { |i| i.to_s }).join("\n") %>'),
+    case $set {
+      IPSet::Set::Array: {
+        # create file with ipset, one record per line
+        file { "${::ipset::params::config_path}/${title}.set":
+          ensure  => file,
+          content => inline_template('<%= (@set.map { |i| i.to_s }).join("\n") %>'),
+        }
       }
-    } elsif $set =~ /^puppet:\/\// {
-      # passed as puppet file
-      file { "${::ipset::params::config_path}/${title}.set":
-        ensure => file,
-        source => $set,
+      IPSet::Set::Puppet_URL: {
+        # passed as puppet file
+        file { "${::ipset::params::config_path}/${title}.set":
+          ensure => file,
+          source => $set,
+        }
       }
-    } elsif $set =~ /^file:\/\// {
-      # passed as target node file
-      file { "${::ipset::params::config_path}/${title}.set":
-        ensure => file,
-        source => regsubst($set, '^.{7}', ''),
+      IPSet::Set::File_URL: {
+        # passed as target node file
+        file { "${::ipset::params::config_path}/${title}.set":
+          ensure => file,
+          source => regsubst($set, '^.{7}', ''),
+        }
       }
-    } else {
-      # passed directly as content string (from template for example)
-      file { "${::ipset::params::config_path}/${title}.set":
-        ensure  => file,
-        content => $set,
+      String: {
+        # passed directly as content string (from template for example)
+        file { "${::ipset::params::config_path}/${title}.set":
+          ensure  => file,
+          content => $set,
+        }
+      }
+      default: {
+        fail('Typing prevent reaching this branch')
       }
     }
 
@@ -100,6 +108,6 @@ define ipset (
       require => Package['ipset'],
     }
   } else {
-    fail('Unsupported "ensure" parameter.')
+    fail('Typing prevent reaching this branch')
   }
 }

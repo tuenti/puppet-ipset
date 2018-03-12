@@ -20,7 +20,6 @@ group :test do
   gem 'puppet-lint-strict_indent-check', require: false
   gem 'puppet-lint-template_file_extension-check', require: false
   gem 'puppet-lint-trailing_newline-check', require: false
-  gem 'puppet-lint-unquoted_string-check', require: false
   gem 'puppet-lint-variable_contains_upcase', require: false
   gem 'puppet-lint-version_comparison-check', require: false
   gem 'puppet-lint-world_writable_files-check', require: false
