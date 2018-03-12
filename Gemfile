@@ -15,7 +15,7 @@ group :test do
   gem 'puppet-lint-no_erb_template-check', require: false
   gem 'puppet-lint-no_file_path_attribute-check', require: false
   gem 'puppet-lint-no_symbolic_file_modes-check', require: false
-  # gem 'puppet-lint-param-docs', require: false
+  gem 'puppet-lint-param-docs', require: false
   gem 'puppet-lint-resource_reference_syntax', require: false
   gem 'puppet-lint-strict_indent-check', require: false
   gem 'puppet-lint-template_file_extension-check', require: false
