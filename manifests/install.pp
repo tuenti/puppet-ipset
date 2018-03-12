@@ -15,7 +15,15 @@ class ipset::install {
   }
 
   # helper scripts
-  ipset::install::helper_script { ['ipset_sync', 'ipset_init']: }
+  ['sync', 'init'].each |$name| {
+    file { "/usr/local/sbin/ipset_${name}":
+      ensure => file,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0754',
+      source => "puppet:///modules/${module_name}/ipset_${name}",
+    }
+  }
 
   # autostart
   if $::osfamily == 'RedHat' {
@@ -68,7 +76,7 @@ class ipset::install {
       ~> service { 'ipset':
         ensure  => 'running',
         enable  => true,
-        require => Ipset::Install::Helper_script['ipset_init'],
+        require => File['/usr/local/sbin/ipset_init'],
       }
     } else {
       warning('Autostart of ipset not implemented for this RedHat release.')
