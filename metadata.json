@@ -16,10 +16,19 @@
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
-      "operatingsystemrelease": [
-        "6.x",
-        "7.x"
-      ]
+      "operatingsystemrelease": ["6", "7"]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": ["6", "7"]
+    },
+    {
+      "operatingsystem": "OracleLinux",
+      "operatingsystemrelease": ["6", "7"]
+    },
+    {
+      "operatingsystem": "Scientific",
+      "operatingsystemrelease": ["6", "7"]
     }
   ],
   "dependencies": [
