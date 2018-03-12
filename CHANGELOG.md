@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.0 (2018-03-13)
+
+* Support Puppet 4 and Puppet 5
+* Tested release
+* Improved documentation
+
 ## 0.5.2 (2016-12-02)
 
 * installation tuning
