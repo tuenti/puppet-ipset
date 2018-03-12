@@ -1,3 +1,7 @@
+# Configure system to handle IP sets.
+#
+# @api private
+#
 class ipset::install {
   include ipset::params
 
@@ -15,11 +19,19 @@ class ipset::install {
   }
 
   # helper scripts
-  ipset::install::helper_script { ['ipset_sync', 'ipset_init']: }
+  ['sync', 'init'].each |$name| {
+    file { "/usr/local/sbin/ipset_${name}":
+      ensure => file,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0754',
+      source => "puppet:///modules/${module_name}/ipset_${name}",
+    }
+  }
 
   # autostart
-  if $::osfamily == 'RedHat' {
-    if $::operatingsystemmajrelease == '6' {
+  if $facts['os']['family'] == 'RedHat' {
+    if $facts['os']['release']['major'] == '6' {
       # make sure libmnl is installed
       package { 'libmnl':
         ensure => installed,
@@ -33,42 +45,42 @@ class ipset::install {
       # using exec instead of Service, because of bug:
       # https://tickets.puppetlabs.com/browse/PUP-6516
       exec { 'ipset_disable_distro':
-        command  => "/bin/bash -c '/etc/init.d/ipset stop && /sbin/chkconfig ipset off'",
-        unless   => "/bin/bash -c '/sbin/chkconfig | /bin/grep ipset | /bin/grep -qv :on'",
-        require  => Package[$::ipset::params::package],
+        command => "/bin/bash -c '/etc/init.d/ipset stop && /sbin/chkconfig ipset off'",
+        unless  => "/bin/bash -c '/sbin/chkconfig | /bin/grep ipset | /bin/grep -qv :on'",
+        require => Package[$::ipset::params::package],
       }
-      ->
       # upstart starter
-      file { '/etc/init/ipset.conf':
+      -> file { '/etc/init/ipset.conf':
+        ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
         content => template("${module_name}/init.upstart.erb"),
       }
-      ~>
       # upstart service autostart
-      service { 'ipset_enable_upstart':
+      ~> service { 'ipset_enable_upstart':
         name     => 'ipset',
         enable   => true,
         provider => 'upstart',
       }
       # dependency is covered by running ipset before RC scripts suite, where firewall service is
-    } elsif $::operatingsystemmajrelease == '7' {
+    } elsif $facts['os']['release']['major'] == '7' {
       # for management of dependencies
       $firewall_service = $::ipset::params::firewall_service
 
       # systemd service definition, there is no script in COS7
       file { '/usr/lib/systemd/system/ipset.service':
+        ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
         content => template("${module_name}/init.systemd.erb"),
       }
-      ~>
       # systemd service autostart
-      service { 'ipset':
-        ensure => 'running',
-        enable => true,
+      ~> service { 'ipset':
+        ensure  => 'running',
+        enable  => true,
+        require => File['/usr/local/sbin/ipset_init'],
       }
     } else {
       warning('Autostart of ipset not implemented for this RedHat release.')

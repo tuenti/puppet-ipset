@@ -1,12 +1,44 @@
+# Declare an IP Set.
+#
+# @param set IP set content or source.
+# @param ensure Should the IP set be created or removed ?
+# @param type Type of IP set.
+# @param options IP set options.
+# @param ignore_contents If ``true``, only the IP set declaration will be
+#   managed, but not its content.
+# @param keep_in_sync If ``true``, Puppet will update the IP set in the kernel
+#   memory. If ``false``, it will only update the IP sets on the filesystem.
+#
+# @example An IP set containing individual IP addresses, specified in the code.
+#   ipset { 'a-few-ip-addresses':
+#     set => ['10.0.0.1', '10.0.0.2', '10.0.0.42'],
+#   }
+#
+# @example An IP set containing IP networks, specified with Hiera.
+#   ipset { 'hiera-networks':
+#     set  => lookup('foo', IP::Address::V4::CIDR),
+#     type => 'hash:net',
+#   }
+#
+# @example An IP set of IP addresses, based on a file stored in a module.
+#   ipset { 'from-puppet-module':
+#     set => "puppet:///modules/${module_name}/ip-addresses",
+#   }
+#
+# @example An IP set of IP networks, based on a file stored on the filesystem.
+#   ipset { 'from-filesystem':
+#     set => 'file:///path/to/ip-addresses',
+#   }
+#
 define ipset (
-  $set,
-  $ensure       = 'present',
-  $type         = 'hash:ip',
-  $options      = {},
+  IPSet::Set $set,
+  Enum['present', 'absent'] $ensure = 'present',
+  IPSet::Type $type = 'hash:ip',
+  IPSet::Options $options = {},
   # do not touch what is inside the set, just its header (properties)
-  $ignore_contents = false,
+  Boolean $ignore_contents = false,
   # keep definition file and in-kernel runtime state in sync
-  $keep_in_sync = true,
+  Boolean $keep_in_sync = true,
 ) {
   include ipset::params
 
@@ -27,34 +59,43 @@ define ipset (
 
     # header
     file { "${::ipset::params::config_path}/${title}.hdr":
+      ensure  => file,
       content => "create ${title} ${type} ${opt_string}\n",
       notify  => Exec["sync_ipset_${title}"],
     }
 
     # content
-    if is_array($set) {
-      # create file with ipset, one record per line
-      file { "${::ipset::params::config_path}/${title}.set":
-        ensure  => present,
-        content => inline_template('<%= (@set.map { |i| i.to_s }).join("\n") %>'),
+    case $set {
+      IPSet::Set::Array: {
+        # create file with ipset, one record per line
+        file { "${::ipset::params::config_path}/${title}.set":
+          ensure  => file,
+          content => inline_template('<%= (@set.map { |i| i.to_s }).join("\n") %>'),
+        }
       }
-    } elsif $set =~ /^puppet:\/\// {
-      # passed as puppet file
-      file { "${::ipset::params::config_path}/${title}.set":
-        ensure => present,
-        source => $set,
+      IPSet::Set::Puppet_URL: {
+        # passed as puppet file
+        file { "${::ipset::params::config_path}/${title}.set":
+          ensure => file,
+          source => $set,
+        }
       }
-    } elsif $set =~ /^file:\/\// {
-      # passed as target node file
-      file { "${::ipset::params::config_path}/${title}.set":
-        ensure => present,
-        source => regsubst($set, '^.{7}', ''),
+      IPSet::Set::File_URL: {
+        # passed as target node file
+        file { "${::ipset::params::config_path}/${title}.set":
+          ensure => file,
+          source => regsubst($set, '^.{7}', ''),
+        }
       }
-    } else {
-      # passed directly as content string (from template for example)
-      file { "${::ipset::params::config_path}/${title}.set":
-        ensure  => present,
-        content => $set,
+      String: {
+        # passed directly as content string (from template for example)
+        file { "${::ipset::params::config_path}/${title}.set":
+          ensure  => file,
+          content => $set,
+        }
+      }
+      default: {
+        fail('Typing prevent reaching this branch')
       }
     }
 
@@ -79,7 +120,7 @@ define ipset (
     }
 
     if $keep_in_sync {
-        File["${::ipset::params::config_path}/${title}.set"] ~> Exec["sync_ipset_${title}"]
+      File["${::ipset::params::config_path}/${title}.set"] ~> Exec["sync_ipset_${title}"]
     }
   } elsif $ensure == 'absent' {
     # ensuring absence
@@ -99,6 +140,6 @@ define ipset (
       require => Package['ipset'],
     }
   } else {
-    fail('Unsupported "ensure" parameter.')
+    fail('Typing prevent reaching this branch')
   }
 }
