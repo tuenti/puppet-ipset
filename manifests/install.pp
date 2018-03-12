@@ -1,3 +1,7 @@
+# Configure system to handle IP sets.
+#
+# @api private
+#
 class ipset::install {
   include ipset::params
 

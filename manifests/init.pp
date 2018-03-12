@@ -1,3 +1,35 @@
+# Declare an IP Set.
+#
+# @param set IP set content or source.
+# @param ensure Should the IP set be created or removed ?
+# @param type Type of IP set.
+# @param options IP set options.
+# @param ignore_contents If ``true``, only the IP set declaration will be
+#   managed, but not its content.
+# @param keep_in_sync If ``true``, Puppet will update the IP set in the kernel
+#   memory. If ``false``, it will only update the IP sets on the filesystem.
+#
+# @example An IP set containing individual IP addresses, specified in the code.
+#   ipset { 'a-few-ip-addresses':
+#     set => ['10.0.0.1', '10.0.0.2', '10.0.0.42'],
+#   }
+#
+# @example An IP set containing IP networks, specified with Hiera.
+#   ipset { 'hiera-networks':
+#     set  => lookup('foo', IP::Address::V4::CIDR),
+#     type => 'hash:net',
+#   }
+#
+# @example An IP set of IP addresses, based on a file stored in a module.
+#   ipset { 'from-puppet-module':
+#     set => "puppet:///modules/${module_name}/ip-addresses",
+#   }
+#
+# @example An IP set of IP networks, based on a file stored on the filesystem.
+#   ipset { 'from-filesystem':
+#     set => 'file:///path/to/ip-addresses',
+#   }
+#
 define ipset (
   IPSet::Set $set,
   Enum['present', 'absent'] $ensure = 'present',

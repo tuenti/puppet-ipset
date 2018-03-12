@@ -1,6 +1,8 @@
+# Module parameters.
+#
+# @param use_firewall_service Define the firewall service used by the server.
+#   Defaults to the Linux distribution default.
 class ipset::params (
-  # if uou use "firewalld" to manage firewall,
-  # create instance of ipset::params class with this service name
   Optional[Enum['iptables', 'firewalld']] $use_firewall_service = undef,
 ) {
   $package = $::osfamily ? {
