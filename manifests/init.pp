@@ -80,7 +80,7 @@ define ipset (
     }
 
     if $keep_in_sync {
-        File["${::ipset::params::config_path}/${title}.set"] ~> Exec["sync_ipset_${title}"]
+      File["${::ipset::params::config_path}/${title}.set"] ~> Exec["sync_ipset_${title}"]
     }
   } elsif $ensure == 'absent' {
     # ensuring absence

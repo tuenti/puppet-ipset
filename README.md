@@ -1,5 +1,7 @@
 # ipset
 
+[![Build Status](https://travis-ci.org/pmuller/puppet-ipset.svg)](https://travis-ci.org/pmuller/puppet-ipset)
+
 ## Overview
 
 Linux ipset management by puppet.

@@ -33,22 +33,20 @@ class ipset::install {
       # using exec instead of Service, because of bug:
       # https://tickets.puppetlabs.com/browse/PUP-6516
       exec { 'ipset_disable_distro':
-        command  => "/bin/bash -c '/etc/init.d/ipset stop && /sbin/chkconfig ipset off'",
-        unless   => "/bin/bash -c '/sbin/chkconfig | /bin/grep ipset | /bin/grep -qv :on'",
-        require  => Package[$::ipset::params::package],
+        command => "/bin/bash -c '/etc/init.d/ipset stop && /sbin/chkconfig ipset off'",
+        unless  => "/bin/bash -c '/sbin/chkconfig | /bin/grep ipset | /bin/grep -qv :on'",
+        require => Package[$::ipset::params::package],
       }
-      ->
       # upstart starter
-      file { '/etc/init/ipset.conf':
+      -> file { '/etc/init/ipset.conf':
         ensure  => file,
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
         content => template("${module_name}/init.upstart.erb"),
       }
-      ~>
       # upstart service autostart
-      service { 'ipset_enable_upstart':
+      ~> service { 'ipset_enable_upstart':
         name     => 'ipset',
         enable   => true,
         provider => 'upstart',
@@ -66,9 +64,8 @@ class ipset::install {
         mode    => '0644',
         content => template("${module_name}/init.systemd.erb"),
       }
-      ~>
       # systemd service autostart
-      service { 'ipset':
+      ~> service { 'ipset':
         ensure  => 'running',
         enable  => true,
         require => Ipset::Install::Helper_script['ipset_init'],
