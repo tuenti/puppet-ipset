@@ -31,6 +31,12 @@
       "operatingsystemrelease": ["6", "7"]
     }
   ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.10.0 < 6.0.0"
+    }
+  ],
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
