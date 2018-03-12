@@ -5,12 +5,12 @@
 class ipset::params (
   Optional[Enum['iptables', 'firewalld']] $use_firewall_service = undef,
 ) {
-  $package = $::osfamily ? {
+  $package = $facts['os']['family'] ? {
     'RedHat' => 'ipset',
     default  => 'ipset',
   }
 
-  $config_path = $::osfamily ? {
+  $config_path = $facts['os']['family'] ? {
     'RedHat' => '/etc/sysconfig/ipset.d',
     'Debian' => '/etc/ipset.d',
     default  => '/etc/ipset.d',
@@ -21,10 +21,10 @@ class ipset::params (
     $firewall_service = $use_firewall_service
   } else {
     # OS defaults
-    if $::osfamily == 'RedHat' {
-      if  $::operatingsystemmajrelease == '6' {
+    if $facts['os']['family'] == 'RedHat' {
+      if  $facts['os']['release']['major'] == '6' {
         $firewall_service = 'iptables'
-      } elsif $::operatingsystemmajrelease == '7' {
+      } elsif $facts['os']['release']['major'] == '7' {
         $firewall_service = 'firewalld'
       }
     } else {

@@ -11,7 +11,7 @@ group :test do
   gem 'puppet-lint-concatenated_template_files-check', require: false
   gem 'puppet-lint-duplicate_class_parameters-check', require: false
   gem 'puppet-lint-leading_zero-check', require: false
-  # gem 'puppet-lint-legacy_facts-check', require: false
+  gem 'puppet-lint-legacy_facts-check', require: false
   gem 'puppet-lint-no_erb_template-check', require: false
   gem 'puppet-lint-no_file_path_attribute-check', require: false
   gem 'puppet-lint-no_symbolic_file_modes-check', require: false

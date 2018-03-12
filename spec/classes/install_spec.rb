@@ -42,7 +42,9 @@ end
 
 describe 'ipset::install' do
   context 'RedHat 6' do
-    let(:facts) { { operatingsystemmajrelease: '6' } }
+    let :facts do
+      { os: { family: 'RedHat', release: { major: '6' } } }
+    end
 
     check_base
     check_ipsets

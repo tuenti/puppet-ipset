@@ -30,8 +30,8 @@ class ipset::install {
   }
 
   # autostart
-  if $::osfamily == 'RedHat' {
-    if $::operatingsystemmajrelease == '6' {
+  if $facts['os']['family'] == 'RedHat' {
+    if $facts['os']['release']['major'] == '6' {
       # make sure libmnl is installed
       package { 'libmnl':
         ensure => installed,
@@ -64,7 +64,7 @@ class ipset::install {
         provider => 'upstart',
       }
       # dependency is covered by running ipset before RC scripts suite, where firewall service is
-    } elsif $::operatingsystemmajrelease == '7' {
+    } elsif $facts['os']['release']['major'] == '7' {
       # for management of dependencies
       $firewall_service = $::ipset::params::firewall_service
 
