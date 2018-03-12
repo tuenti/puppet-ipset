@@ -3,3 +3,6 @@ fixtures:
     stdlib:
       repo: 'puppetlabs/stdlib'
       ref: '4.24.0'
+    ip:
+      repo: 'thrnio/ip'
+      ref: '1.0.1'
