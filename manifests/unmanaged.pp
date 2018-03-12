@@ -3,10 +3,10 @@
 # Warning: when chaning set attributes (type, options)
 #          contents won't be kept, set will be recreated as empty
 define ipset::unmanaged(
-  $ensure  = 'present',
-  $type    = 'hash:ip',
-  $options = {},
-  $keep_in_sync = true,
+  Enum['present', 'absent'] $ensure = 'present',
+  IPSet::Type $type = 'hash:ip',
+  IPSet::Options $options = {},
+  Boolean $keep_in_sync = true,
 ) {
   ipset { $title:
     ensure          => $ensure,
