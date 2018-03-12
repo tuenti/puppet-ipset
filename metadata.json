@@ -1,18 +1,18 @@
 {
-  "name": "mighq-ipset",
+  "name": "pmuller-ipset",
   "version": "0.5.2",
-  "author": "contact@mighq.net",
+  "author": "Philippe Muller",
   "summary": "Linux IP sets management",
   "license": "Apache-2.0",
-  "source": "https://github.com/mighq/puppet-ipset",
+  "source": "https://github.com/pmuller/puppet-ipset",
   "tags": [
     "ipset",
     "linux",
     "firewall",
     "iptables"
   ],
-  "issues_url": "https://github.com/mighq/puppet-ipset/issues",
-  "project_page": "https://github.com/mighq/puppet-ipset",
+  "issues_url": "https://github.com/pmuller/puppet-ipset/issues",
+  "project_page": "https://github.com/pmuller/puppet-ipset",
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",

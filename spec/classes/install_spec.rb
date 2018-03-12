@@ -81,7 +81,6 @@ def check_rhel7_systemd_unit(firewall_service)
         content: <<~CONFIG
           [Unit]
           Description=define and fill-in ipsets
-          Documentation=https://github.com/mighq/puppet-ipset
           Before=#{firewall_service}.service
 
           [Service]
