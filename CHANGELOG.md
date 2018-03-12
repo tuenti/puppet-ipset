@@ -1,26 +1,45 @@
-2016-12-02 - 0.5.2
+# Changelog
+
+## 0.5.2 (2016-12-02)
+
 * installation tuning
-2016-07-22 - 0.5.1
+
+## 0.5.1 (2016-07-22)
+
 * just code quality fixes
-2016-07-19 - 0.5.0
+
+## 0.5.0 (2016-07-19)
+
 * improved support for rhel 7 + service deps
 * fix from pull request #10 & #13
 * be more strict what we accept as params
 * fix: actually do the removal
 * if loading of set contents fail, fail puppet
 * ipset::unmanaged support
-2016-06-16 - 0.4.1
+
+## 0.4.1 (2016-06-16)
+
 * fix lost return value in ipset_sync
-2016-05-27 - 0.4.0
+
+## 0.4.0 (2016-05-27)
+
 * do not collide with sysvinit service from pkg
-2016-04-14 - 0.3.3
+
+## 0.3.3 (2016-04-14)
+
 * whitespace cleanup - indentation
-2016-04-14 - 0.3.2
+
+## 0.3.2 (2016-04-14)
+
 * verbose output option
 * trim whitespaces from start&end of config file when comparing
-2016-02-26 - 0.3.1
+
+## 0.3.1 (2016-02-26)
+
 * /32 and /128 entries fix
-2016-02-26 - 0.3.0
+
+## 0.3.0 (2016-02-26)
+
 * support for passing set content as an array
 * using swap when changing set contents - solves iptables cooperation problems
 * ability to not sync the runtime (in-kernel) state with configs
@@ -30,13 +49,16 @@
 * config folder for debian changed to /etc/ipset.d
 * other minor code & bug fixes
 
-2015-04-26 - 0.2.1
+## 0.2.1 (2015-04-26)
+
 * documentation update
 
-2015-04-26 - 0.2.0
+## 0.2.0 (2015-04-26)
+
 * code quality tuning
 * usage examples added to README.md
 * systemd service definition / centos7 support
 
-2015-01-23 - 0.1.0
+## 0.1.0 (2015-01-23)
+
 * initial module release
