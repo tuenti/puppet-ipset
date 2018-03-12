@@ -17,7 +17,6 @@ end
 def check_ipsets
   it do
     %w[init sync].each do |script|
-      is_expected.to contain_ipset__install__helper_script("ipset_#{script}")
       is_expected.to contain_file("/usr/local/sbin/ipset_#{script}")
         .only_with(ensure: 'file', owner: 'root', group: 'root', mode: '0754',
                    source: "puppet:///modules/ipset/ipset_#{script}")
@@ -117,7 +116,7 @@ describe 'ipset::install' do
         is_expected.to contain_service('ipset').only_with(
           ensure: 'running',
           enable: true,
-          require: 'Ipset::Install::Helper_script[ipset_init]'
+          require: 'File[/usr/local/sbin/ipset_init]'
         ).that_subscribes_to('File[/usr/lib/systemd/system/ipset.service]')
       end
     end
