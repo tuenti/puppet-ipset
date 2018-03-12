@@ -1,7 +1,12 @@
 # Declare an IP set, without managing its content.
 #
-# Warning: when changing IP set attributes (type, options)
-#          contents won't be kept, set will be recreated as empty
+# Useful when you have a dynamic process that generates an IP set content,
+# but still want to define and use it from Puppet.
+#
+# <aside class="warning">
+# When changing IP set attributes (type, options) contents won't be kept,
+# set will be recreated as empty.
+# </aside>
 #
 # @param ensure Should the IP set be created or removed ?
 # @param type Type of IP set.
