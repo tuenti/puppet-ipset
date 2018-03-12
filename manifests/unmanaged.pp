@@ -8,6 +8,10 @@
 # @param options IP set options.
 # @param keep_in_sync If ``true``, Puppet will update the IP set in the kernel
 #   memory. If ``false``, it will only update the IP sets on the filesystem.
+#
+# @example
+#   ipset::unmanaged { 'unmanaged-ipset-name': }
+#
 define ipset::unmanaged(
   Enum['present', 'absent'] $ensure = 'present',
   IPSet::Type $type = 'hash:ip',
