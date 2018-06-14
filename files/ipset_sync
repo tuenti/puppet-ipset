@@ -63,6 +63,7 @@ function construct_ipset_dump() {
       #   * empty lines
       # * cleanup
       #   * network mask suffix in complete IP (IPv4=32, IPv6=128)
+      #   * remove inline comments
       #   * trim whitespaces
       cat "${f_content}" | \
         grep -v '^[[:space:]]*#' | \
