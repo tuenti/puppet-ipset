@@ -61,7 +61,7 @@ simple_test_cases = [
   [
     'array',
     ['10.0.0.1 #Comment 1', '192.168.0.1 #Comment 2'],
-    { content: "10.0.0.1\n192.168.0.1" }
+    { content: "10.0.0.1 #Comment 1\n192.168.0.1 #Comment 2" }
   ],
   [
     'array',
@@ -71,7 +71,7 @@ simple_test_cases = [
   [
     'string',
     ["10.0.0.1 #Comment 1\n192.168.0.1 #Comment 2"],
-    { content: "10.0.0.1\n192.168.0.1" }
+    { content: "10.0.0.1 #Comment 1\n192.168.0.1 #Comment 2" }
   ],
   [
     'string',
