@@ -77,7 +77,7 @@ simple_test_cases = [
     'string',
     ["10.0.0.1,80\n192.168.0.1,443"],
     { content: "10.0.0.1,80\n192.168.0.1,443" }
-  ],
+  ]
 ]
 
 describe 'ipset' do
