@@ -29,7 +29,5 @@ matrix:
       env: CHECK=spec
     -
       env: PUPPET_GEM_VERSION="~> 4.0" CHECK=spec
-    -
-      env: CHECK=build DEPLOY_TO_FORGE=yes
 notifications:
   email: false
