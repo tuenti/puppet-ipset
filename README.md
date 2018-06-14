@@ -2,7 +2,7 @@
 
 [![Puppet Forge](http://img.shields.io/puppetforge/v/pmuller/ipset.svg)](https://forge.puppetlabs.com/pmuller/ipset)
 [![Puppet Forge downloads](https://img.shields.io/puppetforge/dt/pmuller/ipset.svg)](https://forge.puppetlabs.com/pmuller/ipset)
-[![Build Status](https://travis-ci.org/pmuller/puppet-ipset.svg)](https://travis-ci.org/pmuller/puppet-ipset)
+[![Build Status](https://travis-ci.org/pmuller/puppet-ipset.svg)](https://travis-ci.org/tuenti/puppet-ipset)
 
 #### Table of Contents
 
