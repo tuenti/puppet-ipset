@@ -43,6 +43,7 @@ ipset { 'foo':
 
 You can also pass a pre-formatted string directly, using one entry per line
 (with ``\n`` as a separator).
+Inline comments are supported starting with `#`.
 This pattern is practical when generating the IP set entries using a template.
 
 ```puppet
@@ -89,6 +90,7 @@ file { '/tmp/bar_set_content':
 
 * Only tested on RedHat-like Linux distributions
 * IPv6 sets have not been tested yet
+* Only *hash* ipsets are supported (this excludes bitmaps and list:set)
 
 ## Changelog
 
