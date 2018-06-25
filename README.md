@@ -90,7 +90,7 @@ file { '/tmp/bar_set_content':
 
 * Only tested on RedHat-like Linux distributions
 * IPv6 sets have not been tested yet
-* Only *hash* ipsets are supported (this excludes bitmaps and list:set)
+* Only **hash** ipsets are supported (this excludes *bitmap* and *list:set*)
 
 ## Changelog
 
